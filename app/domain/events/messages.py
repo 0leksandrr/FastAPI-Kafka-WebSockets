@@ -6,3 +6,4 @@ from app.domain.events.base import BaseEvent
 class NewMessageReceivedEvent(BaseEvent):
     message_oid: str
     message_text: str
+    chat_oid: str
