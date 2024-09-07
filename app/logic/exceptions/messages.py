@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from app.logic.exceptions.base import LogicException
 
 
-@dataclass(frozen=True, eq=False)
+@dataclass(eq=False)
 class ChatWithThatTitleAlreadyExistsException(LogicException):
     title: str
 

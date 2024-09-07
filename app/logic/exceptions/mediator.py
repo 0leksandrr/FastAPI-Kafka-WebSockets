@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from app.logic.exceptions.base import LogicException
 
 
-@dataclass(frozen=True, eq=False)
+@dataclass(eq=False)
 class EventHandlersNotRegisteredException(LogicException):
     event_type: type
 
@@ -12,7 +12,7 @@ class EventHandlersNotRegisteredException(LogicException):
         return f"Event type {self.event_type} not registered"
 
 
-@dataclass(frozen=True, eq=False)
+@dataclass(eq=False)
 class CommandHandlersNotRegisteredException(LogicException):
     command_type: type
 
