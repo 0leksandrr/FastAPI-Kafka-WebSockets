@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC
-from typing import TypeVar, Any
+from typing import TypeVar, Any, Generic
 
 from app.domain.events.base import BaseEvent
 
@@ -9,6 +9,6 @@ ER = TypeVar('ER', bound=Any)
 
 
 @dataclass(frozen=True)
-class EventHandler(ABC):
+class EventHandler(ABC, Generic[ET, ER]):
     def handle(self, event: ET) -> ER:
         ...

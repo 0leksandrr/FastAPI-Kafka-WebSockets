@@ -6,11 +6,11 @@ from app.logic import Mediator, CreateChatCommand
 
 
 @pytest.mark.asyncio
-def test_create_chat_command_success(
+async def test_create_chat_command_success(
         chat_repository: BaseChatRepository,
         mediator: Mediator
 ):
     # TODO: ADD FAKER FOR REGISTERIN RANDOM TEXT
-    chat: Chat = mediator.handle_command(CreateChatCommand(title='something'))[0]
+    chat: Chat = (await mediator.handle_command(CreateChatCommand(title='something')))[0]
 
-    assert chat_repository.check_chat_exists_by_title(chat.title.as_generic_type())
+    assert await chat_repository.check_chat_exists_by_title(chat.title.as_generic_type())

@@ -9,5 +9,5 @@ def init_mediator(
     ):
     mediator.register_command(
         CreateChatCommand,
-        CreateChatCommandHandler(chat_repository=chat_repository),
+        [CreateChatCommandHandler(chat_repository=chat_repository)],
     )

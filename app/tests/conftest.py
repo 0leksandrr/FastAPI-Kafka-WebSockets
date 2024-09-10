@@ -13,3 +13,5 @@ def chat_repository() -> MemoryChatRepository:
 def mediator(chat_repository: BaseChatRepository) -> Mediator:
     mediator = Mediator()
     init_mediator(mediator=mediator, chat_repository=chat_repository)
+
+    return mediator
