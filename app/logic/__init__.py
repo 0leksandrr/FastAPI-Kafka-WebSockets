@@ -1,4 +1,4 @@
-from app.infra.repositories.messages import MemoryChatRepository, BaseChatRepository
+from app.infra.repositories.messages import BaseChatRepository
 from app.logic.commands.message import CreateChatCommand, CreateChatCommandHandler
 from app.logic.mediator import Mediator
 
