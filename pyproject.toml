@@ -12,6 +12,7 @@ uvicorn = "^0.30.6"
 ipython = "^8.26.0"
 pytest = "^8.3.2"
 pytest-asyncio = "^0.24.0"
+punq = "^0.7.0"
 
 
 [tool.poetry.group.dev.dependencies]
