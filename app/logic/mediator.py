@@ -14,7 +14,7 @@ class Mediator:
         default_factory=lambda: defaultdict(list),
         kw_only=True
     )
-    commands_map: dict[ER, CommandHandler] = field(
+    commands_map: dict[CT, CommandHandler] = field(
         default_factory=lambda: defaultdict(list),
         kw_only=True
     )

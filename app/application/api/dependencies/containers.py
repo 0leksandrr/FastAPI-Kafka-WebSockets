@@ -1,3 +1,3 @@
-from punq import Container
+from app.logic import init_container
 
-container = Container()
+container = init_container()
