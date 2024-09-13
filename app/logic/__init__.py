@@ -8,7 +8,7 @@ from app.logic.mediator import Mediator
 
 
 @lru_cache(1)
-def init_container():
+def init_container() -> Container:
     container = Container()
 
     container.register(BaseChatRepository, MemoryChatRepository)
@@ -23,4 +23,6 @@ def init_container():
         return mediator
 
     container.register(Mediator, factory=init_mediator)
+
+    return container
 
