@@ -9,7 +9,7 @@ from app.logic.mediator import Mediator
 
 @lru_cache(1)
 def init_container() -> Container:
-    return init_container()
+    return _init_container()
 
 
 def _init_container() -> Container:

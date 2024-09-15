@@ -5,9 +5,6 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-RUN apt update -y && \
-    apt install -y python3-dev gcc musl-dev
-
 ADD pyproject.toml /app
 
 RUN pip install --upgrade pip
@@ -17,3 +14,5 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --no-root --no-interaction --no-ansi
 
 COPY . /app/
+
+CMD ["uvicorn", "--factory", "app.application.api.main:create_app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
