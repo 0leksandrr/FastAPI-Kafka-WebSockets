@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:6-jammy
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - data:/data/db
+    networks:
+      - backend
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_DB_ADMIN_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_DB_ADMIN_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+    ports:
+      - '28081:8081'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+
+
+volumes:
+  data:
+
+networks:
+  backend:
+    driver: bridge
