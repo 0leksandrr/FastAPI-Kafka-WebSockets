@@ -4,6 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 
 from app.domain.entities.messages import Chat
 from app.infra.repositories.messages.base import BaseChatRepository
+from app.infra.repositories.messages.converters import convert_entity_to_document
 
 
 @dataclass
@@ -16,7 +17,9 @@ class MongoDBChatRepositories(BaseChatRepository):
         return self.mongo_db_client[self.mongo_db_db_name][self.mongo_db_collection_name]
 
     async def check_chat_exists_by_title(self, title: str) -> bool:
-        ...
+        collection = self._get_chat_collection()
+
+        return await collection.find_one({"title": title})
 
     async def add_chat(self, chat: Chat) -> None:
         collection = self._get_chat_collection()
