@@ -8,10 +8,11 @@ def convert_messages_to_document(message: Message) -> dict:
         'created_at': message.created_at,
     }
 
+
 def convert_entity_to_document(chat: Chat) -> dict:
     return {
         'oid': chat.oid,
-        'title': chat.title,
+        'title': chat.title.as_generic_type(),
         'created_at': chat.created_at,
         'messages': [convert_messages_to_document(message) for message in chat.messages],
     }

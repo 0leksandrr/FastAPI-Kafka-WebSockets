@@ -1,15 +1,22 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from app.domain.entities.messages import Chat
+from app.domain.entities.messages import Chat, Message
 
 
 @dataclass
-class BaseChatRepository(ABC):
+class BaseChatsRepository(ABC):
     @abstractmethod
     async def check_chat_exists_by_title(self, title: str) -> bool:
-        pass
+        ...
 
     @abstractmethod
     async def add_chat(self, chat: Chat) -> None:
+        ...
+
+
+@dataclass
+class BaseMessagesRepository(ABC):
+    @abstractmethod
+    async def add_message(self, chat_oid: str, message: Message) -> None:
         ...

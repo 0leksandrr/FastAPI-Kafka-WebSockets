@@ -1,12 +1,10 @@
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class BaseConfig(BaseSettings):
-    api_port: int
-    mongodb_connection_uri: str
-    mongodb_chat_collection: str
-    mongodb_chat_database: str
+class Config(BaseSettings):
+    mongodb_connection_uri: str = Field(alias='MONGODB_CONNECTION_URI')
+    mongodb_chat_database: str = Field(default='chat', alias='MONGODB_CHAT_DATABASE')
+    mongodb_chat_collection: str = Field(default='chat', alias='MONGODB_CHAT_COLLECTION')
 
-    class Config:
-        env_file = '../../.env'
+    model_config = SettingsConfigDict(env_file='../../.env', extra='ignore')
