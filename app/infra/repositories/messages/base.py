@@ -11,6 +11,10 @@ class BaseChatsRepository(ABC):
         ...
 
     @abstractmethod
+    async def get_chat_by_oid(self, oid: str) -> Chat:
+        ...
+
+    @abstractmethod
     async def add_chat(self, chat: Chat) -> None:
         ...
 

@@ -13,30 +13,28 @@ class BaseMongoDBRepository:
     mongo_db_db_name: str
     mongo_db_collection_name: str
 
-    def _get_collection(self) -> AsyncIOMotorCollection:
+    @property
+    def _collection(self) -> AsyncIOMotorCollection:
         return self.mongo_db_client[self.mongo_db_db_name][self.mongo_db_collection_name]
 
 
 @dataclass
 class MongoDBChatsRepositories(BaseChatsRepository, BaseMongoDBRepository):
     async def check_chat_exists_by_title(self, title: str) -> bool:
-        collection = self._get_collection()
+        return bool(await self._collection.find_one({"title": title}))
 
-        return await collection.find_one({"title": title})
+    async def get_chat_by_oid(self, oid: str) -> bool:
+        chat_document = await self._collection.find_one({"oid": oid})
+        return convert_chat_document_to_entity(chat_document)
 
     async def add_chat(self, chat: Chat) -> None:
-        collection = self._get_collection()
-
-        await collection.insert_one(
-            convert_entity_to_document(chat),
-        )
+        await self._collection.insert_one(convert_entity_to_document(chat),)
 
 
 @dataclass
 class MongoDBMessageRepositories(BaseMessagesRepository, BaseMongoDBRepository):
     async def add_message(self, chat_oid: str, message: Message) -> None:
-        collection = self._get_collection()
-        await collection.update_one(
+        await self._collection.update_one(
             filter={'oid': chat_oid},
             update={
                 '$push': {
