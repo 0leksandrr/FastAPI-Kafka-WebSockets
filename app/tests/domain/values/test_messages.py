@@ -3,10 +3,17 @@ from datetime import datetime
 import pytest
 from faker import Faker
 
-from app.domain.entities.messages import Message, Chat
+from app.domain.entities.messages import (
+    Chat,
+    Message,
+)
 from app.domain.events.messages import NewMessageReceivedEvent
 from app.domain.exceptions.messages import TitleTooLongException
-from app.domain.values.messages import Text, Title
+from app.domain.values.messages import (
+    Text,
+    Title,
+)
+
 
 fake = Faker()
 
@@ -70,4 +77,3 @@ def test_new_message_events():
     assert event.message_oid == message.oid
     assert event.message_text == message.text.as_generic_type()
     assert event.chat_oid == chat.oid
-

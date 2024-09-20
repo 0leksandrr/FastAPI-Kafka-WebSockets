@@ -1,11 +1,8 @@
 import pytest
-
 from faker import Faker
-
-from httpx import Response
-
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from httpx import Response
 from starlette import status
 
 
@@ -13,7 +10,7 @@ from starlette import status
 async def test_create_chat_success(
         app: FastAPI,
         client: TestClient,
-        faker: Faker
+        faker: Faker,
 ):
     url = app.url_path_for('create_chat_handler')
     title = faker.text(max_nb_chars=30)
@@ -29,7 +26,7 @@ async def test_create_chat_success(
 async def test_create_chat_fail_text_too_long(
         app: FastAPI,
         client: TestClient,
-        faker: Faker
+        faker: Faker,
 ):
     url = app.url_path_for('create_chat_handler')
     title = faker.sentence(nb_words=50)
@@ -42,10 +39,9 @@ async def test_create_chat_fail_text_too_long(
 
 
 @pytest.mark.asyncio
-async def test_create_chat_fail_text_too_long(
+async def test_create_chat_fail_text_is_empty(
         app: FastAPI,
         client: TestClient,
-        faker: Faker
 ):
     url = app.url_path_for('create_chat_handler')
     response: Response = client.post(url=url, json={'title': ''})

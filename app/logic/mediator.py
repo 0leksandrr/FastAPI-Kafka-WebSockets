@@ -1,22 +1,37 @@
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import (
+    dataclass,
+    field,
+)
 from typing import Iterable
 
 from app.domain.events.base import BaseEvent
-from app.logic.commands.base import CommandHandler, CT, CR, BaseCommand
-from app.logic.events.base import EventHandler, ER, ET
-from app.logic.exceptions.mediator import EventHandlersNotRegisteredException, CommandHandlersNotRegisteredException
+from app.logic.commands.base import (
+    BaseCommand,
+    CommandHandler,
+    CR,
+    CT,
+)
+from app.logic.events.base import (
+    ER,
+    ET,
+    EventHandler,
+)
+from app.logic.exceptions.mediator import (
+    CommandHandlersNotRegisteredException,
+    EventHandlersNotRegisteredException,
+)
 
 
 @dataclass(frozen=True)
 class Mediator:
     events_map: dict[ET, EventHandler] = field(
         default_factory=lambda: defaultdict(list),
-        kw_only=True
+        kw_only=True,
     )
     commands_map: dict[CT, CommandHandler] = field(
         default_factory=lambda: defaultdict(list),
-        kw_only=True
+        kw_only=True,
     )
 
     def register_event(self, event: ET, event_handlers: Iterable[EventHandler[ET, ER]]):

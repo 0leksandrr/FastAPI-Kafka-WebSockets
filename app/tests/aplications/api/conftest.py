@@ -1,6 +1,6 @@
 import pytest
-from fastapi.testclient import TestClient
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 from app.application.api.main import create_app
 from app.logic import init_container

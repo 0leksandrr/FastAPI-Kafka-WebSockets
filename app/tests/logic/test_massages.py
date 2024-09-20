@@ -4,7 +4,10 @@ from faker import Faker
 from app.domain.entities.messages import Chat
 from app.domain.values.messages import Title
 from app.infra.repositories.messages.base import BaseChatsRepository
-from app.logic import Mediator, CreateChatCommand
+from app.logic import (
+    CreateChatCommand,
+    Mediator,
+)
 from app.logic.exceptions.messages import ChatWithThatTitleAlreadyExistsException
 
 

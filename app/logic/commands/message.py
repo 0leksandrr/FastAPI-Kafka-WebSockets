@@ -1,10 +1,25 @@
 from dataclasses import dataclass
 
-from app.domain.entities.messages import Chat, Message
-from app.domain.values.messages import Title, Text
-from app.infra.repositories.messages.base import BaseChatsRepository, BaseMessagesRepository
-from app.logic.commands.base import BaseCommand, CommandHandler
-from app.logic.exceptions.messages import ChatWithThatTitleAlreadyExistsException, ChatNotFoundException
+from app.domain.entities.messages import (
+    Chat,
+    Message,
+)
+from app.domain.values.messages import (
+    Text,
+    Title,
+)
+from app.infra.repositories.messages.base import (
+    BaseChatsRepository,
+    BaseMessagesRepository,
+)
+from app.logic.commands.base import (
+    BaseCommand,
+    CommandHandler,
+)
+from app.logic.exceptions.messages import (
+    ChatNotFoundException,
+    ChatWithThatTitleAlreadyExistsException,
+)
 
 
 @dataclass(frozen=True)
@@ -36,12 +51,13 @@ class CreateMessageCommand(BaseCommand):
 
 
 @dataclass(frozen=True)
-class CreateChatCommandHandler(CommandHandler[CreateChatCommand, Chat]):
+class CreateMessageCommandHandler(CommandHandler[CreateChatCommand, Chat]):
     message_repository: BaseMessagesRepository
     chats_repository: BaseChatsRepository
 
     async def handle(self, command: CreateMessageCommand) -> Message:
-        if not (await self.chats_repository.get_chat_by_oid(oid=command.chat_oid)):
+        chat = await self.chats_repository.get_chat_by_oid(oid=command.chat_oid)
+        if not chat:
             raise ChatNotFoundException(chat_oid=command.chat_oid)
 
         message = Message(text=Text(value=command.text))

@@ -8,7 +8,7 @@ def create_app() -> FastAPI:
         title="Kafka Websockets Chat",
         docs_url="/api/docs",
         description='A simple Kafka + DDD example',
-        debug=True
+        debug=True,
     )
     app.include_router(messages_router, prefix="/chat")
 

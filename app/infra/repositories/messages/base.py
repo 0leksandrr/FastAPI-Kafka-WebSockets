@@ -1,7 +1,13 @@
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from dataclasses import dataclass
 
-from app.domain.entities.messages import Chat, Message
+from app.domain.entities.messages import (
+    Chat,
+    Message,
+)
 
 
 @dataclass
@@ -11,7 +17,7 @@ class BaseChatsRepository(ABC):
         ...
 
     @abstractmethod
-    async def get_chat_by_oid(self, oid: str) -> Chat:
+    async def get_chat_by_oid(self, oid: str) -> Chat | None:
         ...
 
     @abstractmethod
