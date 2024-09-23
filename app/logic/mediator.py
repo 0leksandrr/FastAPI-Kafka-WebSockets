@@ -6,6 +6,7 @@ from dataclasses import (
 from typing import Iterable
 
 from app.domain.events.base import BaseEvent
+from app.logic import GetChatMessageQueryHandler
 from app.logic.commands.base import (
     BaseCommand,
     CommandHandler,
@@ -21,6 +22,7 @@ from app.logic.exceptions.mediator import (
     CommandHandlersNotRegisteredException,
     EventHandlersNotRegisteredException,
 )
+from app.logic.queries.base import QT, QR, QueryHandler, BaseQuery
 
 
 @dataclass(frozen=True)
@@ -33,6 +35,13 @@ class Mediator:
         default_factory=lambda: defaultdict(list),
         kw_only=True,
     )
+    queries_map: dict[QT, GetChatMessageQueryHandler] = field(
+        default_factory=dict,
+        kw_only=True,
+    )
+
+    def register_query(self, query: QT, query_handler: QueryHandler[QT]) -> QR:
+        self.queries_map[query] = query_handler
 
     def register_event(self, event: ET, event_handlers: Iterable[EventHandler[ET, ER]]):
         self.events_map[event].append(event_handlers)
@@ -62,3 +71,6 @@ class Mediator:
             raise CommandHandlersNotRegisteredException(command_type)
 
         return [await handler.handle(command) for handler in handlers]
+
+    async def handle_query(self, query: BaseQuery) -> QR:
+        return await self.queries_map[query.__class__].handle(query=query)

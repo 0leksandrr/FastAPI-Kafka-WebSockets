@@ -36,3 +36,7 @@ class CreateMessageResponseSchema(BaseModel):
             oid=message.oid,
             text=message.text.as_generic_type(),
         )
+
+
+class ChatDetailSchema(BaseModel):
+    ...
