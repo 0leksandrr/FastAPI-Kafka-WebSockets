@@ -6,7 +6,6 @@ from dataclasses import (
 from typing import Iterable
 
 from app.domain.events.base import BaseEvent
-from app.logic import GetChatMessageQueryHandler
 from app.logic.commands.base import (
     BaseCommand,
     CommandHandler,
@@ -35,12 +34,12 @@ class Mediator:
         default_factory=lambda: defaultdict(list),
         kw_only=True,
     )
-    queries_map: dict[QT, GetChatMessageQueryHandler] = field(
+    queries_map: dict[QT, QueryHandler] = field(
         default_factory=dict,
         kw_only=True,
     )
 
-    def register_query(self, query: QT, query_handler: QueryHandler[QT]) -> QR:
+    def register_query(self, query: QT, query_handler: QueryHandler[QT, QR]):
         self.queries_map[query] = query_handler
 
     def register_event(self, event: ET, event_handlers: Iterable[EventHandler[ET, ER]]):

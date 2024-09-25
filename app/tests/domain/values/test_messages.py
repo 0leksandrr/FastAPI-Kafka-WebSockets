@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import uuid4
 
 import pytest
 from faker import Faker
@@ -22,7 +23,7 @@ fake = Faker()
 def valid_message():
     some_text = fake.text(max_nb_chars=200)
     text = Text(value=some_text)
-    return Message(text=text)
+    return Message(chat_oid=str(uuid4()), text=text)
 
 
 def test_create_message_success(valid_message):
@@ -50,7 +51,7 @@ def test_create_chat_too_long():
 
 def test_add_message_to_chat_success():
     text = Text(value=fake.text(max_nb_chars=200))
-    message = Message(text=text)
+    message = Message(chat_oid=str(uuid4()), text=text)
 
     title = Title(fake.text(max_nb_chars=100))
     chat = Chat(title=title)
@@ -62,7 +63,7 @@ def test_add_message_to_chat_success():
 
 def test_new_message_events():
     text = Text(value=fake.text(max_nb_chars=10))
-    message = Message(text=text)
+    message = Message(chat_oid=str(uuid4()), text=text)
 
     title = Title(fake.text(max_nb_chars=10))
     chat = Chat(title=title)

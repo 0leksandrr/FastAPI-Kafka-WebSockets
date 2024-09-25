@@ -1,26 +1,44 @@
 from dataclasses import dataclass
-from typing import Generic
+from typing import Generic, Iterable, Tuple
 
-from app.domain.entities.messages import Chat
+from app.domain.entities.messages import Chat, Message
+from app.infra.repositories.filters.messages import GetMessagesFilters
 from app.infra.repositories.messages.base import BaseChatsRepository, BaseMessagesRepository
 from app.logic.exceptions.messages import ChatNotFoundException
-from app.logic.queries.base import BaseQuery, QueryHandler, QT
+from app.logic.queries.base import BaseQuery, QueryHandler
 
 
 @dataclass(frozen=True)
 class GetChatDetailQuery(BaseQuery):
-    chat_id: str
+    chat_oid: str
 
 
 @dataclass(frozen=True)
-class GetChatMessageQueryHandler(QueryHandler, Generic[QT, QR]):
-    chats_repository = BaseChatsRepository
-    messeges_repository = BaseMessagesRepository
+class GetMessagesQuery(BaseQuery):
+    chat_oid: str
+    filters: GetMessagesFilters
 
-    async def handle(self, command: GetChatDetailQuery) -> Chat:
-        chat = await self.chats_repository.get_chat_by_oid(oid=command.chat_id)
+
+@dataclass(frozen=True)
+class GetChatDetailQueryHandler(QueryHandler):
+    chats_repository: BaseChatsRepository
+    messeges_repository: BaseMessagesRepository
+
+    async def handle(self, query: GetChatDetailQuery) -> Chat:
+        chat = await self.chats_repository.get_chat_by_oid(oid=query.chat_oid)
 
         if not chat:
-            raise ChatNotFoundException(command.chat_id)
+            raise ChatNotFoundException(query.chat_oid)
 
         return chat
+
+
+@dataclass(frozen=True)
+class GetMessagesQueryHandler(QueryHandler):
+    messages_repository: BaseMessagesRepository
+
+    async def handle(self, query: GetMessagesQuery) -> tuple[Iterable[Message], int]:
+        return await self.messages_repository.get_messages(
+            chat_oid=query.chat_oid,
+            filters=query.filters
+        )
