@@ -37,6 +37,6 @@ class BaseMessagesRepository(ABC):
     async def get_messages(
             self,
             chat_oid: str,
-            filters: GetMessagesFilters
+            filters: GetMessagesFilters,
     ) -> tuple[Iterable[Message], int]:
         ...

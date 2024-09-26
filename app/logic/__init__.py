@@ -6,15 +6,27 @@ from punq import (
     Scope,
 )
 
-from app.infra.repositories.messages.base import BaseChatsRepository, BaseMessagesRepository
-from app.infra.repositories.messages.mongo import MongoDBChatsRepositories, MongoDBMessagesRepositories
+from app.infra.repositories.messages.base import (
+    BaseChatsRepository,
+    BaseMessagesRepository,
+)
+from app.infra.repositories.messages.mongo import (
+    MongoDBChatsRepositories,
+    MongoDBMessagesRepositories,
+)
 from app.logic.commands.message import (
     CreateChatCommand,
-    CreateChatCommandHandler, CreateMessageCommand, CreateMessageCommandHandler,
+    CreateChatCommandHandler,
+    CreateMessageCommand,
+    CreateMessageCommandHandler,
 )
 from app.logic.mediator import Mediator
-from app.logic.queries.messages import GetChatDetailQueryHandler, GetChatDetailQuery, GetMessagesQuery, \
-    GetMessagesQueryHandler
+from app.logic.queries.messages import (
+    GetChatDetailQuery,
+    GetChatDetailQueryHandler,
+    GetMessagesQuery,
+    GetMessagesQueryHandler,
+)
 from app.settings.config import Config
 
 
@@ -78,7 +90,7 @@ def _init_container() -> Container:
         )
         mediator.register_query(
             GetMessagesQuery,
-            container.resolve(GetMessagesQueryHandler)
+            container.resolve(GetMessagesQueryHandler),
         )
 
         return mediator

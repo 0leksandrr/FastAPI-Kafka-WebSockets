@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Iterable
 
 from pydantic import BaseModel
 

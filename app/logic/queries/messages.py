@@ -1,11 +1,20 @@
 from dataclasses import dataclass
-from typing import Generic, Iterable, Tuple
+from typing import Iterable
 
-from app.domain.entities.messages import Chat, Message
+from app.domain.entities.messages import (
+    Chat,
+    Message,
+)
 from app.infra.repositories.filters.messages import GetMessagesFilters
-from app.infra.repositories.messages.base import BaseChatsRepository, BaseMessagesRepository
+from app.infra.repositories.messages.base import (
+    BaseChatsRepository,
+    BaseMessagesRepository,
+)
 from app.logic.exceptions.messages import ChatNotFoundException
-from app.logic.queries.base import BaseQuery, QueryHandler
+from app.logic.queries.base import (
+    BaseQuery,
+    QueryHandler,
+)
 
 
 @dataclass(frozen=True)
@@ -40,5 +49,5 @@ class GetMessagesQueryHandler(QueryHandler):
     async def handle(self, query: GetMessagesQuery) -> tuple[Iterable[Message], int]:
         return await self.messages_repository.get_messages(
             chat_oid=query.chat_oid,
-            filters=query.filters
+            filters=query.filters,
         )

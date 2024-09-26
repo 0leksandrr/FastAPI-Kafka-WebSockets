@@ -21,7 +21,12 @@ from app.logic.exceptions.mediator import (
     CommandHandlersNotRegisteredException,
     EventHandlersNotRegisteredException,
 )
-from app.logic.queries.base import QT, QR, QueryHandler, BaseQuery
+from app.logic.queries.base import (
+    BaseQuery,
+    QR,
+    QT,
+    QueryHandler,
+)
 
 
 @dataclass(frozen=True)

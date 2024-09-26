@@ -8,19 +8,25 @@ from punq import Container
 
 from app.application.api.messages.filters import GetMessagesFilter
 from app.application.api.messages.schemas import (
+    ChatDetailSchema,
     CreateChatRequestSchema,
     CreateChatResponseSchema,
     CreateMessageRequestSchema,
-    CreateMessageResponseSchema, ChatDetailSchema, GetMessagesQueryResponseSchema, MessageDetailSchema,
+    CreateMessageResponseSchema,
+    GetMessagesQueryResponseSchema,
+    MessageDetailSchema,
 )
 from app.application.api.schemas import ErrorSchema
 from app.domain.exceptions.base import ApplicationException
 from app.logic import (
     CreateChatCommand,
+    GetChatDetailQuery,
+    GetMessagesQuery,
     init_container,
-    Mediator, GetChatDetailQuery, GetMessagesQuery,
+    Mediator,
 )
 from app.logic.commands.message import CreateMessageCommand
+
 
 router = APIRouter(
     tags=["Chat"],
@@ -84,11 +90,11 @@ async def create_message_handler(
     responses={
         status.HTTP_200_OK: {"model": ChatDetailSchema},
         status.HTTP_400_BAD_REQUEST: {"model": ErrorSchema},
-    }
+    },
 )
 async def get_chat_handler(
         chat_oid: str,
-        container: Container = Depends(init_container)
+        container: Container = Depends(init_container),
 ) -> ChatDetailSchema:
     mediator: Mediator = container.resolve(Mediator)
 
@@ -112,13 +118,13 @@ async def get_chat_handler(
 async def get_messages_handler(
         chat_oid: str,
         filters: GetMessagesFilter = Depends(),
-        container: Container = Depends(init_container)
+        container: Container = Depends(init_container),
 ) -> GetMessagesQueryResponseSchema:
     mediator: Mediator = container.resolve(Mediator)
 
     try:
         messages, count = await mediator.handle_query(
-            GetMessagesQuery(chat_oid=chat_oid, filters=filters.to_infra())
+            GetMessagesQuery(chat_oid=chat_oid, filters=filters.to_infra()),
         )
     except ApplicationException as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={'error': e.message})
@@ -129,4 +135,3 @@ async def get_messages_handler(
         offset=filters.offset,
         items=[MessageDetailSchema.from_entity(message=message) for message in messages],
     )
-

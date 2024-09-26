@@ -7,7 +7,10 @@ from app.domain.entities.messages import (
     Chat,
     Message,
 )
-from app.domain.values.messages import Title, Text
+from app.domain.values.messages import (
+    Text,
+    Title,
+)
 
 
 def convert_messages_to_document(message: Message) -> dict:

@@ -18,7 +18,8 @@ from app.infra.repositories.messages.base import (
 from app.infra.repositories.messages.converters import (
     convert_chat_document_to_entity,
     convert_chat_to_document,
-    convert_messages_to_document, convert_message_document_to_entity,
+    convert_message_document_to_entity,
+    convert_messages_to_document,
 )
 
 
@@ -66,4 +67,3 @@ class MongoDBMessagesRepositories(BaseMessagesRepository, BaseMongoDBRepository)
         ]
 
         return messages, count
-
