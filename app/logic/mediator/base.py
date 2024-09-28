@@ -6,6 +6,7 @@ from dataclasses import (
 from typing import Iterable
 
 from app.domain.events.base import BaseEvent
+from app.logic.mediator.event import EventMediator
 from app.logic.commands.base import (
     BaseCommand,
     CommandHandler,
@@ -30,7 +31,7 @@ from app.logic.queries.base import (
 
 
 @dataclass(frozen=True)
-class Mediator:
+class Mediator(EventMediator):
     events_map: dict[ET, EventHandler] = field(
         default_factory=lambda: defaultdict(list),
         kw_only=True,
