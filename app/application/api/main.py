@@ -10,7 +10,7 @@ def create_app() -> FastAPI:
         description='A simple Kafka + DDD example',
         debug=True,
     )
-    app.include_router(messages_router, prefix="/chat")
+    app.include_router(messages_router, prefix="/message")
 
     return app
 

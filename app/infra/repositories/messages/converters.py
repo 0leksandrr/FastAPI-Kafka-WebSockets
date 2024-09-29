@@ -7,6 +7,10 @@ from app.domain.entities.messages import (
     Chat,
     Message,
 )
+from app.domain.values.messages import (
+    Text,
+    Title,
+)
 
 
 def convert_messages_to_document(message: Message) -> dict:
@@ -14,6 +18,7 @@ def convert_messages_to_document(message: Message) -> dict:
         'oid': message.oid,
         'text': message.text.as_generic_type(),
         'created_at': message.created_at,
+        'chat_oid': message.chat_oid,
     }
 
 
@@ -22,25 +27,21 @@ def convert_chat_to_document(chat: Chat) -> dict:
         'oid': chat.oid,
         'title': chat.title.as_generic_type(),
         'created_at': chat.created_at,
-        'messages': [convert_messages_to_document(message) for message in chat.messages],
     }
 
 
 def convert_message_document_to_entity(message_document: Mapping[str, Any]) -> Message:
     return Message(
         oid=message_document['oid'],
-        text=message_document['text'],
+        text=Text(value=message_document['text']),
         created_at=message_document['created_at'],
+        chat_oid=message_document['chat_oid'],
     )
 
 
 def convert_chat_document_to_entity(chat_document: Mapping[str, Any]) -> Chat:
     return Chat(
         oid=chat_document['oid'],
-        title=chat_document['title'],
+        title=Title(value=chat_document['title']),
         created_at=chat_document['created_at'],
-        messages={
-            convert_message_document_to_entity(message)
-            for message in chat_document['messages']
-        },
     )
