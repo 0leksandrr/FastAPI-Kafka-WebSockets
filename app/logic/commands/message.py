@@ -36,10 +36,10 @@ class CreateChatCommandHandler(CommandHandler[CreateChatCommand, Chat]):
             raise ChatWithThatTitleAlreadyExistsException(command.title)
 
         title = Title(value=command.title)
-        # TODO: read events
 
-        new_chat = Chat(title=title)
+        new_chat = Chat.create_chat(title=title)
         await self.chat_repository.add_chat(new_chat)
+        await self._mediator.publish(new_chat.pull_events())
 
         return new_chat
 

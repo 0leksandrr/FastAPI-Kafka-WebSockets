@@ -10,14 +10,18 @@ from typing import (
 )
 
 from app.domain.events.base import BaseEvent
+from app.infra.message_brokers.base import BaseMessageBroker
 
 
 ET = TypeVar('ET', bound=BaseEvent)
 ER = TypeVar('ER', bound=Any)
 
 
-@dataclass(frozen=True)
+@dataclass
 class EventHandler(ABC, Generic[ET, ER]):
+    message_broker: BaseMessageBroker
+    broker_topic: str | None = None
+
     @abstractmethod
     def handle(self, event: ET) -> ER:
         ...
