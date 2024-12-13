@@ -62,9 +62,6 @@ class Mediator(
 
         for event in events:
             handlers: Iterable[EventHandler] = self.events_map[event.__class__]
-            for handler in handlers:
-                result.append(await handler.handle(event=event))
-
             result.extend([await handle.handle(event) for handle in handlers])
 
         return result

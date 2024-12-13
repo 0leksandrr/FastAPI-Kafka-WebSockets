@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from punq import Container
 
-from .messages.handlers import router as messages_router
-from ...infra.message_brokers.base import BaseMessageBroker
-from ...logic import init_container
+from app.application.api.messages.handlers import router as messages_router
+from app.infra.message_brokers.base import BaseMessageBroker
+from app.logic import init_container
 
 
 @asynccontextmanager
@@ -29,7 +29,7 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    app.include_router(messages_router, prefix="/message")
+    app.include_router(messages_router, prefix="/chat")
 
     return app
 

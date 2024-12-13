@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.domain.events.messages import NewChatCreatedEvent
+from app.domain.events.messages import NewChatCreatedEvent, NewMessageReceivedEvent
 from app.infra.message_brokers.converters import convert_event_to_broker_message
 from app.logic.events.base import EventHandler
 
@@ -14,4 +14,14 @@ class CreateChatEventHandler(EventHandler[NewChatCreatedEvent, None]):
             topic=self.broker_topic,
             value=convert_event_to_broker_message(event=event),
         )
-        print(f'SOME INTRESTING TEXT {event.title}')
+
+
+@dataclass
+class CreateMessageEventHandler(EventHandler[NewMessageReceivedEvent, None]):
+
+    async def handle(self, event: NewMessageReceivedEvent) -> None:
+        await self.message_broker.send_message(
+            key=event.event_id.encode(),
+            topic=self.broker_topic,
+            value=convert_event_to_broker_message(event=event),
+        )

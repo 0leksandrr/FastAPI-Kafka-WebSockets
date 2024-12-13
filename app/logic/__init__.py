@@ -24,7 +24,7 @@ from app.logic.commands.message import (
     CreateMessageCommand,
     CreateMessageCommandHandler,
 )
-from app.logic.events.messages import CreateChatEventHandler
+from app.logic.events.messages import CreateChatEventHandler, CreateMessageEventHandler
 from app.logic.mediator.base import Mediator
 from app.logic.mediator.event import EventMediator
 from app.logic.queries.messages import (
@@ -105,6 +105,11 @@ def _init_container() -> Container:
             message_broker=container.resolve(BaseMessageBroker),
         )
 
+        create_message_event_handler = CreateMessageEventHandler(
+            broker_topic=config.new_message_event_topic,
+            message_broker=container.resolve(BaseMessageBroker),
+        )
+
         mediator.register_command(
             CreateChatCommand,
             [create_chat_handler],
@@ -122,8 +127,13 @@ def _init_container() -> Container:
             container.resolve(GetMessagesQueryHandler),
         )
         mediator.register_event(
-            NewChatCreatedEvent,
+            CreateChatEventHandler,
             [create_chat_event_handler],
+        )
+
+        mediator.register_event(
+            CreateMessageEventHandler,
+            [create_message_event_handler]
         )
 
         return mediator
